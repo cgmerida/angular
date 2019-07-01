@@ -15,6 +15,7 @@ import "hammerjs";
 
 // MY SERVICES
 import { DishService } from "./services/dish.service";
+import { PromotionService } from "./services/promotion.service";
 
 // MY COMPONENTS
 import { MenuComponent } from './menu/menu.component';
@@ -52,7 +53,8 @@ import { AppRoutingModule } from "./app-routing/app-routing.module";
     AppRoutingModule
   ],
   providers: [
-    DishService 
+    DishService,
+    PromotionService
   ],
   bootstrap: [AppComponent]
 })
