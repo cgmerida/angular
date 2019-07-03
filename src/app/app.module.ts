@@ -16,6 +16,8 @@ import "hammerjs";
 // MY SERVICES
 import { DishService } from "./services/dish.service";
 import { PromotionService } from "./services/promotion.service";
+import { LeadersService } from './services/leaders.service';
+
 
 // MY COMPONENTS
 import { MenuComponent } from './menu/menu.component';
@@ -27,7 +29,6 @@ import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 
 import { AppRoutingModule } from "./app-routing/app-routing.module";
-
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { AppRoutingModule } from "./app-routing/app-routing.module";
   ],
   providers: [
     DishService,
-    PromotionService
+    PromotionService,
+    LeadersService
   ],
   bootstrap: [AppComponent]
 })
