@@ -36,22 +36,56 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        
+
         <mat-list>
           <mat-list-item *ngFor="let comment of dish.comments">
             <p matLine>{{ comment.comment }}</p>
             <p matLine>{{ comment.rating }} stars</p>
             <p matLine>-- {{ comment.author.concat(" ").concat(comment.date | date) }}</p>
           </mat-list-item>
+          <mat-list-item *ngIf="commentForm.status != 'INVALID'">
+            <p matLine>{{ commentForm.value.comment }}</p>
+            <p matLine>{{ commentForm.value.rating }} stars</p>
+            <p matLine>-- {{ commentForm.value.author }}</p>
+          </mat-list-item>
+          <p>{{ commentForm.value | json }} {{ commentForm.status | json }}</p>
         </mat-list>
 
       </mat-card-content>
     </mat-card>
   </div>
-  <div fxFlex [hidden]="dish">
-    <mat-spinner>
-      <h4>Loading... Please Wait!</h4>
-    </mat-spinner>
+  <div fxFlex="100" *ngIf=dish>
+    <mat-card>
+      <mat-card-content>
+        <form novalidate [formGroup]="commentForm" #cform="ngForm" (ngSubmit)=onSubmit()>
+          <p>
+            <mat-form-field class="full-width">
+              <input type="text" matInput formControlName="author" placeholder="Name" required>
+              <mat-error *ngIf="formErrors.author">
+                {{ formErrors.author }}
+              </mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-slider thumbLabel tickInterval="1" min="0" max="5" value="5"
+            formControlName="rating"></mat-slider>
+          </p>
+          <p>
+            <mat-form-field class="full-width">
+              <textarea matInput formControlName="comment" placeholder="Your Comment" rows="12"></textarea>
+            </mat-form-field>
+          </p>
+          <button type="submit" mat-button class="background-primary text-floral-white"
+            [disabled]="commentForm.invalid">
+            Submit
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div [hidden]="dish">
+    <mat-spinner></mat-spinner>
+    <h4>Loading...Please wait</h4>
   </div>
 
 </div>
