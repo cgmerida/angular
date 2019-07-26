@@ -8,7 +8,7 @@
           <h3>{{ dish.name | uppercase }}</h3>
         </mat-card-title>
       </mat-card-header>
-      <img mat-card-image src="{{ dish.image }}" alt="{{ dish.name }}">
+      <img mat-card-image src="{{ BaseUrl + dish.image }}" alt="{{ dish.name }}">
       <mat-card-content>
         <p>{{ dish.description }}</p>
       </mat-card-content>
@@ -48,15 +48,9 @@
             <p matLine>{{ commentForm.value.rating }} stars</p>
             <p matLine>-- {{ commentForm.value.author }}</p>
           </mat-list-item>
-          <p>{{ commentForm.value | json }} {{ commentForm.status | json }}</p>
+          <!-- <p>{{ commentForm.value | json }} {{ commentForm.status | json }}</p> -->
         </mat-list>
 
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <div fxFlex="100" *ngIf=dish>
-    <mat-card>
-      <mat-card-content>
         <form novalidate [formGroup]="commentForm" #cform="ngForm" (ngSubmit)=onSubmit()>
           <p>
             <mat-form-field class="full-width">
@@ -67,8 +61,7 @@
             </mat-form-field>
           </p>
           <p>
-            <mat-slider thumbLabel tickInterval="1" min="0" max="5" value="5"
-            formControlName="rating"></mat-slider>
+            <mat-slider thumbLabel tickInterval="1" min="0" max="5" value="5" formControlName="rating"></mat-slider>
           </p>
           <p>
             <mat-form-field class="full-width">
@@ -83,6 +76,7 @@
       </mat-card-content>
     </mat-card>
   </div>
+
   <div [hidden]="dish">
     <mat-spinner></mat-spinner>
     <h4>Loading...Please wait</h4>
