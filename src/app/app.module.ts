@@ -29,6 +29,7 @@ import "hammerjs";
 import { DishService } from "./services/dish.service";
 import { PromotionService } from "./services/promotion.service";
 import { LeadersService } from './services/leaders.service';
+import { ProcessHTTPMsgService } from './services/process-httpmsg.service'
 
 
 // MY COMPONENTS
@@ -83,7 +84,8 @@ import { baseUrl } from "./shared/baseurl";
     DishService,
     PromotionService,
     LeadersService,
-    { provide: 'baseURL', useValue: baseUrl }
+    { provide: 'baseURL', useValue: baseUrl },
+    ProcessHTTPMsgService
   ],
   entryComponents: [
     LoginComponent
