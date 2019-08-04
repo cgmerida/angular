@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Feedback, ContactType } from "../shared/feedback";
-import { flyInOut } from '../animations/app.animation';
+import { flyInOut, expand } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
@@ -12,15 +13,20 @@ import { flyInOut } from '../animations/app.animation';
     'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackCopy: Feedback;
   contactType = ContactType;
   @ViewChild("fform", null) feedbackFormDirective;
+  errMess: string;
+  loading: boolean = false;
+  result: boolean = false;
 
   formErrors = {
     firstname: '',
@@ -50,7 +56,8 @@ export class ContactComponent implements OnInit {
     },
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private feedbackService: FeedbackService) {
     this.createForm();
   }
 
@@ -79,12 +86,12 @@ export class ContactComponent implements OnInit {
       return 0;
     }
     const form = this.feedbackForm;
-    for(const field in this.formErrors) {
+    for (const field in this.formErrors) {
       if (this.formErrors.hasOwnProperty(field)) {
         //Clear previus Error message (if any)
         this.formErrors[field] = '';
         const control = form.get(field);
-        if(control && control.dirty && !control.valid) {
+        if (control && control.dirty && !control.valid) {
           const messages = this.validationMessages[field];
           for (const key in control.errors) {
             if (control.errors.hasOwnProperty(key)) {
@@ -97,8 +104,28 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+    this.loading = true;
+    this.result = true;
+    this.feedbackCopy = this.feedbackForm.value;
+
+    this.feedbackService.submitFeedback(this.feedbackCopy)
+      .subscribe(
+        fb => {
+          this.loading = false;
+          this.feedback = fb;
+          setTimeout(() => {
+            this.feedback = null;
+            this.feedbackCopy = null;
+            this.result = false;
+          }, 5000);
+        },
+        errmess => {
+          this.errMess = <any>errmess;
+          this.feedback = null; this.feedbackCopy = null;
+        }
+      );
+
+
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Leader } from "../shared/Leader";
 import { LeadersService } from '../services/leaders.service';
 import { flyInOut, expand } from '../animations/app.animation';
+import { baseUrl } from '../shared/baseurl';
 
 
 @Component({
@@ -21,12 +22,17 @@ import { flyInOut, expand } from '../animations/app.animation';
 export class AboutComponent implements OnInit {
 
   leaders: Leader[];
+  errMess: string;
+  BaseUrl = baseUrl;
 
   constructor(private leaderService: LeadersService) { }
 
   ngOnInit() {
     this.leaderService.getLeaders()
-      .subscribe(leader => this.leaders = leader);
+      .subscribe(
+        leader => this.leaders = leader,
+        errmess => this.errMess = errmess
+        );
   }
 
 }

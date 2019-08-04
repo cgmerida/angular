@@ -128,13 +128,15 @@ export class DishdetailComponent implements OnInit {
 
     this.dishCopy.comments.push(this.comment);
     this.dishService.putDish(this.dishCopy)
-      .subscribe(dish => {
-        this.dish = dish; this.dishCopy = dish;
-      },
+      .subscribe(
+        dish => {
+          this.dish = dish; this.dishCopy = dish;
+        },
         err => {
           this.dish = null; this.dishCopy = null;
           this.errMess = <any>err
-        });
+        }
+      );
 
     console.log(this.comment);
     this.commentForm.reset({
